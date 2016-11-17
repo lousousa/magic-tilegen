@@ -15,14 +15,10 @@ fs.readFile("./images/Source.png", function(err, squid) {
   var ctxTemp = canvasTemp.getContext("2d");
   ctxTemp.drawImage(img, 0, 0, img.width, img.height);
 
-  var dataMapping = [];
-  for (var j = 0; j < 2; j++) {
-    dataMapping.push([]);
-    for (var i = 0; i < tileCount * 2; i++) {
-      dataMapping[j].push( ctxTemp.getImageData(i * tileSize / 2, j * tileSize / 2,
-        tileSize / 2, tileSize / 2) );
-    }
-  }
+  var _data = function(x, y) {
+    return ctxTemp.getImageData(x * tileSize / 2, y * tileSize / 2,
+      tileSize / 2, tileSize / 2)
+  };
 
   var borderMapping = {
     "3-full": [
@@ -36,6 +32,19 @@ fs.readFile("./images/Source.png", function(err, squid) {
       [ [2, 1], [1, 2], [2, 1], [1, 2] ],
       [ [2, 2], [2, 2], [2, 2], [2, 2] ]
     ]
+  };
+  var dataMapping = {
+    "3-full": function() {
+      var arr = [];
+      for (var i = 0; i < tileCount; i++) {
+        arr.push([]);
+        arr[i].push({ "x": i * 2, "y": 0 });
+        arr[i].push({ "x": i * 2 + 1, "y": 0 });
+        arr[i].push({ "x": i * 2 + 1, "y": 1 });
+        arr[i].push({ "x": i * 2, "y": 1 });
+      }
+      return arr;
+    }
   };
   var mapSelected = "3-full";
   var m = borderMapping[mapSelected];
@@ -51,6 +60,7 @@ fs.readFile("./images/Source.png", function(err, squid) {
   };
 
   var id = 1;
+  var d = dataMapping[mapSelected]();
 
   for (var i = 0; i < m.length; i++) {
     for (var j = 0; j < m.length; j++) {
@@ -66,12 +76,10 @@ fs.readFile("./images/Source.png", function(err, squid) {
 
             var pos = getCellPositionByID(id, tileCount, tileCount);
 
-            console.log(i, j, k, l);
-
-            ctx.putImageData(dataMapping[0][8], pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
-            ctx.putImageData(dataMapping[0][9], pos.x * tileSize + tileSize / 2, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
-            ctx.putImageData(dataMapping[1][9], pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
-            ctx.putImageData(dataMapping[1][8], pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(_data(d[i][0].x, d[i][0].y), pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(_data(d[j][1].x, d[j][1].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(_data(d[k][2].x, d[k][2].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(_data(d[l][3].x, d[l][3].y), pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
 
             id++;
             if (id == tileCount * tileCount) {
