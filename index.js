@@ -2,7 +2,7 @@ var fs = require("fs");
 var Canvas = require("canvas");
 var Image = Canvas.Image;
 
-var gcd = function(a, b) { return b ? a : gcd(b, a%b); };
+var gcd = function(a, b) { return !b ? a : gcd(b, a % b); };
 
 fs.readFile("./images/Source.png", function(err, squid) {
   if (err) throw err;
@@ -11,15 +11,15 @@ fs.readFile("./images/Source.png", function(err, squid) {
   img.src = squid;
   var tileCount = img.width / gcd(img.width, img.height);
   var tileSize = img.width / tileCount;
-  var canvas = new Canvas(img.width, img.height);
-  var ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, img.width, img.height);
+  var canvasTemp = new Canvas(img.width, img.height);
+  var ctxTemp = canvasTemp.getContext("2d");
+  ctxTemp.drawImage(img, 0, 0, img.width, img.height);
 
   var dataMapping = [];
   for (var j = 0; j < 2; j++) {
     dataMapping.push([]);
-    for (var i = 0; i < tileCount; i++) {
-      dataMapping[j].push( ctx.getImageData(i * tileSize / 2, j * tileSize / 2,
+    for (var i = 0; i < tileCount * 2; i++) {
+      dataMapping[j].push( ctxTemp.getImageData(i * tileSize / 2, j * tileSize / 2,
         tileSize / 2, tileSize / 2) );
     }
   }
@@ -39,8 +39,8 @@ fs.readFile("./images/Source.png", function(err, squid) {
   };
   var mapSelected = "3-full";
   var m = borderMapping[mapSelected];
-  canvas = new Canvas(tileSize * tileCount, tileSize * tileCount);
-  ctx = canvas.getContext("2d");
+  var canvas = new Canvas(tileSize * tileCount, tileSize * tileCount);
+  var ctx = canvas.getContext("2d");
 
   var getCellPositionByID = function(id, xLength, yLength) {
     if (id < 1) return false;
@@ -49,6 +49,8 @@ fs.readFile("./images/Source.png", function(err, squid) {
     var y = Math.floor((id - 1) / yLength);
     return { "x": x, "y": y };
   };
+
+  var id = 1;
 
   for (var i = 0; i < m.length; i++) {
     for (var j = 0; j < m.length; j++) {
@@ -62,7 +64,22 @@ fs.readFile("./images/Source.png", function(err, squid) {
             m[l][3][1] == m[i][0][0]
           ) {
 
-            //ctx.putImageData(data, 0, 0, 0, 0, 4, 5);
+            var pos = getCellPositionByID(id, tileCount, tileCount);
+
+            console.log(i, j, k, l);
+
+            ctx.putImageData(dataMapping[0][8], pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(dataMapping[0][9], pos.x * tileSize + tileSize / 2, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(dataMapping[1][9], pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
+            ctx.putImageData(dataMapping[1][8], pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2);
+
+            id++;
+            if (id == tileCount * tileCount) {
+              var out = fs.createWriteStream("./out.png");
+              canvas.pngStream()
+                .on("data", function(chunk) { out.write(chunk); })
+                .on("end", function() { console.log("Generated"); });
+            }
 
           }
 
@@ -70,12 +87,5 @@ fs.readFile("./images/Source.png", function(err, squid) {
       }
     }
   }
-
-  /*
-  var out = fs.createWriteStream("./out.png");
-  canvas.pngStream()
-    .on("data", function(chunk) { out.write(chunk); })
-    .on("end", function() { console.log("Generated"); });
-  */
 
 });
