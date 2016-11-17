@@ -14,7 +14,15 @@ fs.readFile("./images/Source.png", function(err, squid) {
   var canvas = new Canvas(img.width, img.height);
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0, img.width, img.height);
-  var data = ctx.getImageData(0, 0, img.width, img.height);
+
+  var dataMapping = [];
+  for (var j = 0; j < 2; j++) {
+    dataMapping.push([]);
+    for (var i = 0; i < tileCount; i++) {
+      dataMapping[j].push( ctx.getImageData(i * tileSize / 2, j * tileSize / 2,
+        tileSize / 2, tileSize / 2) );
+    }
+  }
 
   var borderMapping = {
     "3-full": [
@@ -31,8 +39,17 @@ fs.readFile("./images/Source.png", function(err, squid) {
   };
   var mapSelected = "3-full";
   var m = borderMapping[mapSelected];
-  canvas = new Canvas(tileWidth * tileCount, tileHeight * tileCount);
+  canvas = new Canvas(tileSize * tileCount, tileSize * tileCount);
   ctx = canvas.getContext("2d");
+
+  var getCellPositionByID = function(id, xLength, yLength) {
+    if (id < 1) return false;
+    if (id > xLength * yLength) return false;
+    var x = (id - 1) % xLength;
+    var y = Math.floor((id - 1) / yLength);
+    return { "x": x, "y": y };
+  };
+
   for (var i = 0; i < m.length; i++) {
     for (var j = 0; j < m.length; j++) {
       for (var k = 0; k < m.length; k++) {
@@ -45,8 +62,7 @@ fs.readFile("./images/Source.png", function(err, squid) {
             m[l][3][1] == m[i][0][0]
           ) {
 
-            //ctx.putImageData(data, i * tileSize, j * tileSize,
-              //tileSize / 4, tileSize / 4, img.width, img.height);
+            //ctx.putImageData(data, 0, 0, 0, 0, 4, 5);
 
           }
 
