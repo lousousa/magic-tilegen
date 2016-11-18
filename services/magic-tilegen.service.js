@@ -4,7 +4,7 @@ const Image = Canvas.Image
 
 const gcd = (a, b) => { return !b ? a : gcd(b, a % b) }
 
-const getPNGStream = (srcImage, cb) => {
+const getDataURL = (srcImage, cb) => {
 
   fs.readFile(srcImage, (err, squid) => {
     if (err) return cb(err)
@@ -82,7 +82,7 @@ const getPNGStream = (srcImage, cb) => {
               ctx.putImageData(_data(d[k][2].x, d[k][2].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
               ctx.putImageData(_data(d[l][3].x, d[l][3].y), pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
 
-              if (id++ == tileCount * tileCount) return cb(null, canvas.pngStream())
+              if (id++ == tileCount * tileCount) return cb(null, canvas.toDataURL())
 
             }
 
@@ -95,4 +95,4 @@ const getPNGStream = (srcImage, cb) => {
 
 }
 
-module.exports = { getPNGStream }
+module.exports = { getDataURL }

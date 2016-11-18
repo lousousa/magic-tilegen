@@ -11,14 +11,13 @@ const getRouter = () => {
     let file = req.file
     if (!file) return res.redirect("/")
 
-    magicTilegen.getPNGStream(`${file.destination}${file.filename}`, function(err, stream) {
-      if (err) res.send(err)
-      else {
-        const out = fs.createWriteStream("./public/out.png")
-        stream
-          .on("data", (chunk) => { out.write(chunk) })
-          .on("end", () => { res.redirect("/public/out.png") })
-      }
+    magicTilegen.getDataURL(`${file.destination}${file.filename}`, function(err, dataURL) {
+      fs.unlink(`${file.destination}${file.filename}`, () => {
+        if (err) res.send(err)
+        else {
+          res.render("generated", { title: "Magic Tilegen", dataURL: dataURL })
+        }
+      })
     })
 
   })
