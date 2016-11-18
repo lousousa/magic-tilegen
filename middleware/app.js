@@ -6,6 +6,7 @@ require("fs").readFile(".buildrc", (err, buildrc) => {
 		JSON.parse(buildrc).uid,
 		express()
 	]
+	const magicTilegen = require("./magic-tilegen")
 	app
 		.set("view engine", "pug")
 		.use((req, res, next) => {
@@ -15,6 +16,7 @@ require("fs").readFile(".buildrc", (err, buildrc) => {
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
 		.use("/public", express.static("./public"))
+		.use(magicTilegen.getRouter())
 		.get("/", (req, res) => {
 			res.render("index", { title: "Magic Tilegen", message: "The app is running correctly!" })
 		})
