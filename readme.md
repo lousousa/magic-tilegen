@@ -2,13 +2,13 @@
 
 ## Description
 
-A automatic generator for squared tile variations.
+A automatic generator of squared tile variations.
 
 ## Features
 
-- Ensure all the possibilities of tiles;
+- Generate all the possibilities of tiles;
 - Significantly minimize the human mistakes;
-- Simplify the tile art editions.
+- Simplify tile art editions.
 
 ## Getting Started
 

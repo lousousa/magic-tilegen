@@ -12,4 +12,18 @@ html
 		link(rel="stylesheet" href="public/app.css")
 		script(src="public/app.js")
 	body
-		span= message
+		div.mw-1080.ta-center
+			h1.page-title MAGIC TILEGEN
+			p.text A automatic generator of squared tile variations.
+			form.mtd-row.form-primary(method="post" enctype="multipart/form-data" action="/upload")
+				div.lg-050-m
+					label.label Source image:
+					input.input(type="file" name="source-image")
+				div.lg-040-m
+					label.label Generation type:
+					select.input(name="type")
+						option(value="3-full") 3 sides - full
+						option(value="3-quarter") 3 sides - quarter top
+						option(value="2-full") 2 sides - full
+				div.lg-010-m
+					button.btn-action(type="submit") Generate

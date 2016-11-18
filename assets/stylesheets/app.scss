@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+* {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #666;
+}
+
+.text {
+  font-size: 18px;
+}
+
+.form-primary {
+  .label {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  .input {
+    border: 1px solid #bbb;
+    padding: 4px 8px;
+    font-size: 18px;
+  }
+  .btn-action {
+    padding: 4px 8px;
+    border: 1px solid #888;
+    background-color: #fff;
+    font-size: 18px;
+    color: #666;
+  }
+}

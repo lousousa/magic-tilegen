@@ -1,1 +1,1 @@
-subl assets configs middleware views
+subl assets configs middleware services views

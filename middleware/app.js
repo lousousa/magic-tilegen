@@ -16,7 +16,7 @@ require("fs").readFile(".buildrc", (err, buildrc) => {
 		.use(bodyParser.urlencoded({ extended: true }))
 		.use("/public", express.static("./public"))
 		.get("/", (req, res) => {
-			res.render("index", { title: "Hello world!", message: "The app is running correctly!" })
+			res.render("index", { title: "Magic Tilegen", message: "The app is running correctly!" })
 		})
 		.use((req, res) => { res.redirect("/") })
 		.listen(http.port, http.host, ()=> {
