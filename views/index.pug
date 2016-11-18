@@ -1,29 +1,25 @@
-doctype html
-html
-	head
-		title= title
-		meta(charset="utf-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
-		// vendor
-		link(rel="stylesheet" href="public/vendor/Ionicons/css/ionicons.min.css")
-		link(rel="stylesheet" href="public/vendor/matadora/dist/matadora.min.css")
-		script(src="public/vendor/jquery/dist/jquery.min.js")
-		// app
-		link(rel="stylesheet" href="public/app.css")
-		script(src="public/app.js")
-	body
-		div.mw-1080.ta-center
-			h1.page-title MAGIC TILEGEN
-			p.text A automatic generator of squared tile variations.
-			form.mtd-row.form-primary(method="post" enctype="multipart/form-data" action="/upload")
-				div.lg-050-m
-					label.label Source image:
-					input.input(type="file" name="source-image")
-				div.lg-040-m
-					label.label Generation type:
-					select.input(name="type")
-						option(value="3-full") 3 sides - full
-						option(value="3-quarter") 3 sides - quarter top
-						option(value="2-full") 2 sides - full
-				div.lg-010-m
-					button.btn-action(type="submit") Generate
+extends ./layout.pug
+block content
+	div.mw-1080.ta-center
+		h1.page-title MAGIC TILEGEN
+		p.text An automatic generator of squared tile variations.
+		h2 Template for valid image inputs:
+		p.text (Be careful, you must to follow the template structure for the generator to work correctly)
+		div.mtd-row
+			div.lg-050-m
+				h4 3 BORDERS, ALL SIDES
+			div.lg-050-m
+				img(src="/public/assets/images/3-full.png")
+		h2 Generate your tileset:
+		form.mtd-row.form-primary(method="post" enctype="multipart/form-data" action="/upload")
+			div.lg-050-m
+				label.label Source image:
+				input.input(type="file" name="source-image")
+			div.lg-040-m
+				label.label Generation type:
+				select.input(name="type")
+					option(value="3-full") 3 borders, all sides
+					option(value="3-top") 3 borders, just top
+					option(value="2-full") 2 borders, all sides
+			div.lg-010-m
+				button.btn-action(type="submit") Generate

@@ -4,7 +4,7 @@ const Image = Canvas.Image
 
 const gcd = (a, b) => { return !b ? a : gcd(b, a % b) }
 
-const getDataURL = (srcImage, cb) => {
+const getDataURL = (srcImage, mapSelected, cb) => {
 
   fs.readFile(srcImage, (err, squid) => {
     if (err) return cb(err)
@@ -49,7 +49,6 @@ const getDataURL = (srcImage, cb) => {
         return arr
       }
     }
-    const mapSelected = "3-full"
     const m = borderMapping[mapSelected]
     const canvas = new Canvas(tileSize * tileCount, tileSize * tileCount)
     const ctx = canvas.getContext("2d")

@@ -2,7 +2,7 @@
 
 ## Description
 
-A automatic generator of squared tile variations.
+An automatic generator of squared tile variations.
 
 ## Features
 

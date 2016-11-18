@@ -5,6 +5,13 @@
   color: #666;
 }
 
+a {
+  color: #0084B4;
+  &:hover, &:focus, &:active {
+    color: #1DA1F2;
+  }
+}
+
 button {
   cursor: pointer;
 }
