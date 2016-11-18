@@ -12,6 +12,7 @@
     "body-parser": "^1.15.1",
     "canvas": "^1.6.2",
     "express": "^4.13.4",
+    "lodash": "^4.17.2",
     "multer": "^1.2.0",
     "pug": "^2.0.0-beta3"
   },

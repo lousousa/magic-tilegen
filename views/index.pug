@@ -1,25 +1,29 @@
 extends ./layout.pug
 block content
-	div.mw-1080.ta-center
-		h1.page-title MAGIC TILEGEN
+	header.header-main.ta-center
+		h1.text-title MAGIC TILEGEN
 		p.text An automatic generator of squared tile variations.
+	div.mw-640.ta-center
 		h2 Template for valid image inputs:
 		p.text (Be careful, you must to follow the template structure for the generator to work correctly)
 		div.mtd-row
-			div.lg-050-m
-				h4 3 BORDERS, ALL SIDES
-			div.lg-050-m
-				img(src="/public/assets/images/3-full.png")
+			-
+				info1 = [
+					{title: "2 BORDERS, ALL SIDES", file: "2-full.png"},
+					{title: "3 BORDERS, JUST TOP", file: "3-top.png"},
+					{title: "3 BORDERS, ALL SIDES", file: "3-full.png"}
+				]
+			each entry in info1
+				div.lg-050-m.ta-right.box-padding-right
+					h4= entry.title
+				div.lg-050-m.ta-left
+					img(src="/public/assets/images/" + entry.file)
 		h2 Generate your tileset:
-		form.mtd-row.form-primary(method="post" enctype="multipart/form-data" action="/upload")
-			div.lg-050-m
-				label.label Source image:
-				input.input(type="file" name="source-image")
-			div.lg-040-m
-				label.label Generation type:
-				select.input(name="type")
-					option(value="3-full") 3 borders, all sides
-					option(value="3-top") 3 borders, just top
-					option(value="2-full") 2 borders, all sides
-			div.lg-010-m
-				button.btn-action(type="submit") Generate
+		form.form-primary(method="post" enctype="multipart/form-data" action="/upload")
+			div.mtd-row
+				div.field.lg-020-m.ta-right
+					label.label Source image:
+				div.field.lg-060-m.ta-left
+					input.input(type="file" name="source-image" accept=".png")
+				div.field.lg-020-m
+					button.btn-action(type="submit") Generate

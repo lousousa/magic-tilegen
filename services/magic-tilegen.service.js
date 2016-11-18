@@ -4,7 +4,7 @@ const Image = Canvas.Image
 
 const gcd = (a, b) => { return !b ? a : gcd(b, a % b) }
 
-const getDataURL = (srcImage, mapSelected, cb) => {
+const getDataURL = (srcImage, cb) => {
 
   fs.readFile(srcImage, (err, squid) => {
     if (err) return cb(err)
@@ -12,7 +12,15 @@ const getDataURL = (srcImage, mapSelected, cb) => {
     const img = new Image
     img.src = squid
 
+    const checker = { 9: "3-full", 6: "3-top", 4: "2-full" }
+
     const tileCount = img.width / gcd(img.width, img.height)
+    if ( !checker[tileCount] )
+      return cb(`Invalid image size! You must to provide a horizontal image
+        containing 4, 6, or 9 tiles. (following the template structure)`)
+
+    const mapSelected = checker[tileCount]
+
     const tileSize = img.width / tileCount
     const canvasTemp = new Canvas(img.width, img.height)
     const ctxTemp = canvasTemp.getContext("2d")
@@ -23,31 +31,45 @@ const getDataURL = (srcImage, mapSelected, cb) => {
         tileSize / 2, tileSize / 2)
     }
 
+    const seedMapping = [
+      [ [0, 0], [0, 0], [0, 0], [0, 0] ],
+      [ [0, 1], [1, 0], [0, 1], [1, 0] ],
+      [ [0, 2], [2, 0], [0, 2], [2, 0] ],
+      [ [1, 0], [0, 1], [1, 0], [0, 1] ],
+      [ [1, 1], [1, 1], [1, 1], [1, 1] ],
+      [ [1, 2], [2, 1], [1, 2], [2, 1] ],
+      [ [2, 0], [0, 2], [2, 0], [0, 2] ],
+      [ [2, 1], [1, 2], [2, 1], [1, 2] ],
+      [ [2, 2], [2, 2], [2, 2], [2, 2] ]
+    ];
+
     const borderMapping = {
-      "3-full": [
-        [ [0, 0], [0, 0], [0, 0], [0, 0] ],
-        [ [0, 1], [1, 0], [0, 1], [1, 0] ],
-        [ [0, 2], [2, 0], [0, 2], [2, 0] ],
-        [ [1, 0], [0, 1], [1, 0], [0, 1] ],
-        [ [1, 1], [1, 1], [1, 1], [1, 1] ],
-        [ [1, 2], [2, 1], [1, 2], [2, 1] ],
-        [ [2, 0], [0, 2], [2, 0], [0, 2] ],
-        [ [2, 1], [1, 2], [2, 1], [1, 2] ],
-        [ [2, 2], [2, 2], [2, 2], [2, 2] ]
+      "3-full": seedMapping,
+      "3-top": [
+        seedMapping[0],
+        seedMapping[1],
+        seedMapping[3],
+        seedMapping[4],
+        seedMapping[2],
+        seedMapping[5]
+      ],
+      "2-full": [
+        seedMapping[0],
+        seedMapping[1],
+        seedMapping[3],
+        seedMapping[4],
       ]
     }
-    const dataMapping = {
-      "3-full": function() {
-        const arr = []
-        for (var i = 0; i < tileCount; i++) {
-          arr.push([])
-          arr[i].push({ "x": i * 2, "y": 0 })
-          arr[i].push({ "x": i * 2 + 1, "y": 0 })
-          arr[i].push({ "x": i * 2 + 1, "y": 1 })
-          arr[i].push({ "x": i * 2, "y": 1 })
-        }
-        return arr
+    const getData = () => {
+      const arr = []
+      for (var i = 0; i < tileCount; i++) {
+        arr.push([])
+        arr[i].push({ "x": i * 2, "y": 0 })
+        arr[i].push({ "x": i * 2 + 1, "y": 0 })
+        arr[i].push({ "x": i * 2 + 1, "y": 1 })
+        arr[i].push({ "x": i * 2, "y": 1 })
       }
+      return arr
     }
     const m = borderMapping[mapSelected]
     const canvas = new Canvas(tileSize * tileCount, tileSize * tileCount)
@@ -59,7 +81,7 @@ const getDataURL = (srcImage, mapSelected, cb) => {
       return { "x": (id - 1) % xLength, "y": Math.floor((id - 1) / yLength) }
     }
 
-    const d = dataMapping[mapSelected]()
+    const d = getData()
     let id = 1
 
     for (let i = 0; i < m.length; i++) {

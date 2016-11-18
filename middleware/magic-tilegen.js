@@ -10,10 +10,9 @@ const getRouter = () => {
     let file = req.file
     if (!file) return res.redirect("/")
 
-    // req.body.type -> mapSelected
     const generatedFilename = file.filename
 
-    magicTilegen.getDataURL(`${file.destination}${file.filename}`, "3-full", function(err, dataURL) {
+    magicTilegen.getDataURL(`${file.destination}${file.filename}`, (err, dataURL) => {
       fs.unlink(`${file.destination}${file.filename}`, () => {
         if (err) res.send(err)
         else {

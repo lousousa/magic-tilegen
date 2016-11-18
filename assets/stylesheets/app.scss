@@ -2,7 +2,7 @@
 
 * {
   font-family: 'Josefin Sans', sans-serif;
-  color: #666;
+  color: #444;
 }
 
 a {
@@ -16,8 +16,30 @@ button {
   cursor: pointer;
 }
 
+.header-main {
+  background-color: #696D7D;
+  padding: 16px 0;
+  .text, .text-title {
+    color: #f8f8f8;
+  }
+  .text-title {
+    font-size: 40px;
+  }
+  .text {
+    font-size: 20px;
+  }
+}
+
 .text {
   font-size: 18px;
+}
+
+.box-padding-right {
+  padding-right: 16px;
+}
+
+.img-generated {
+  max-width: 480px;
 }
 
 .form-primary {
@@ -25,16 +47,24 @@ button {
     margin-right: 8px;
     font-size: 18px;
   }
+  .field {
+    margin: 16px 0;
+  }
   .input {
     border: 1px solid #bbb;
     padding: 4px 8px;
     font-size: 18px;
+    width: 100%;
+  }
+  input[type="file"] {
+    font-size: 13px;
+    padding: 7px;
   }
   .btn-action {
-    padding: 4px 8px;
-    border: 1px solid #888;
-    background-color: #fff;
+    padding: 8px 32px;
+    border: 1px solid #666;
+    background-color: #696D7D;
     font-size: 18px;
-    color: #666;
+    color: #fff;
   }
 }
