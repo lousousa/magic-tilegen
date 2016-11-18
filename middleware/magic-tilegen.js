@@ -14,10 +14,10 @@ const getRouter = () => {
     magicTilegen.getPNGStream(`${file.destination}${file.filename}`, function(err, stream) {
       if (err) res.send(err)
       else {
-        const out = fs.createWriteStream("./out.png")
+        const out = fs.createWriteStream("./public/out.png")
         stream
           .on("data", (chunk) => { out.write(chunk) })
-          .on("end", () => { res.send("Tileset generated!") })
+          .on("end", () => { res.redirect("/public/out.png") })
       }
     })
 
