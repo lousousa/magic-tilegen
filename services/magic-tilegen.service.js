@@ -50,8 +50,8 @@ const getDataURL = (srcImage, cb) => {
         seedMapping[1],
         seedMapping[3],
         seedMapping[4],
-        seedMapping[2],
-        seedMapping[5]
+        [ [0, 2], [2, 0], [0, 2], [2, 0] ],
+        [ [1, 2], [2, 1], [1, 2], [2, 1] ]
       ],
       "2-full": [
         seedMapping[0],
@@ -72,13 +72,15 @@ const getDataURL = (srcImage, cb) => {
       return arr
     }
     const m = borderMapping[mapSelected]
-    const canvas = new Canvas(tileSize * tileCount, tileSize * tileCount)
+    const destSize = tileCount == 6 ? { w: 4, h: tileCount }:
+      { w: tileCount, h: tileCount };
+    const canvas = new Canvas(tileSize * destSize.w, tileSize * destSize.h)
     const ctx = canvas.getContext("2d")
 
     const getCellPositionByID = (id, xLength, yLength) => {
       if (id < 1) return false
       if (id > xLength * yLength) return false
-      return { "x": (id - 1) % xLength, "y": Math.floor((id - 1) / yLength) }
+      return { "x": (id - 1) % xLength, "y": Math.floor((id - 1) / xLength) }
     }
 
     const d = getData()
@@ -96,14 +98,21 @@ const getDataURL = (srcImage, cb) => {
               m[l][3][1] == m[i][0][0]
             ) {
 
-              const pos = getCellPositionByID(id, tileCount, tileCount)
+              let cancel = false
+              if (tileCount == 6)
+                cancel = k == 4 || k == 5 || l == 4 || l == 5
 
-              ctx.putImageData(_data(d[i][0].x, d[i][0].y), pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2)
-              ctx.putImageData(_data(d[j][1].x, d[j][1].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2)
-              ctx.putImageData(_data(d[k][2].x, d[k][2].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
-              ctx.putImageData(_data(d[l][3].x, d[l][3].y), pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
+              if (!cancel) {
+                const pos = getCellPositionByID(id, destSize.w, destSize.h)
 
-              if (id++ == tileCount * tileCount) return cb(null, canvas.toDataURL())
+                ctx.putImageData(_data(d[i][0].x, d[i][0].y), pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2)
+                ctx.putImageData(_data(d[j][1].x, d[j][1].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2)
+                ctx.putImageData(_data(d[k][2].x, d[k][2].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
+                ctx.putImageData(_data(d[l][3].x, d[l][3].y), pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
+
+                if (id++ == destSize.w * destSize.h)
+                  return cb(null, canvas.toDataURL())
+              }
 
             }
 
