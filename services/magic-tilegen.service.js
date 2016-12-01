@@ -12,7 +12,7 @@ const getDataURL = (srcImage, cb) => {
     const img = new Image
     img.src = squid
 
-    const checker = { 9: "3-full", 6: "3-top", 4: "2-full" }
+    const checker = { 9: "3-full", 6: "3-top", 4: "2-full", 3: "3-internal-corners", 2: "2-internal-corners" }
 
     const tileCount = img.width / gcd(img.width, img.height)
     if ( !checker[tileCount] )
@@ -58,6 +58,15 @@ const getDataURL = (srcImage, cb) => {
         seedMapping[1],
         seedMapping[3],
         seedMapping[4],
+      ],
+      "2-internal-corners": [
+        seedMapping[0],
+        seedMapping[0]
+      ],
+      "3-internal-corners": [
+        seedMapping[0],
+        seedMapping[0],
+        seedMapping[0]
       ]
     }
     const getData = () => {
@@ -71,9 +80,11 @@ const getDataURL = (srcImage, cb) => {
       }
       return arr
     }
+
     const m = borderMapping[mapSelected]
-    const destSize = tileCount == 6 ? { w: 4, h: tileCount }:
+    let destSize = tileCount == 6 ? { w: 4, h: tileCount }:
       { w: tileCount, h: tileCount };
+    if (tileCount == 2 || tileCount == 3) destSize = { w: tileCount * tileCount, h: tileCount * tileCount };
     const canvas = new Canvas(tileSize * destSize.w, tileSize * destSize.h)
     const ctx = canvas.getContext("2d")
 
@@ -110,8 +121,7 @@ const getDataURL = (srcImage, cb) => {
                 ctx.putImageData(_data(d[k][2].x, d[k][2].y), pos.x * tileSize + tileSize / 2, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
                 ctx.putImageData(_data(d[l][3].x, d[l][3].y), pos.x * tileSize, pos.y * tileSize + tileSize / 2, 0, 0, tileSize / 2, tileSize / 2)
 
-                if (id++ == destSize.w * destSize.h)
-                  return cb(null, canvas.toDataURL())
+                if (id++ == destSize.w * destSize.h) return cb(null, canvas.toDataURL())
               }
 
             }

@@ -2,16 +2,18 @@ extends ./layout.pug
 block content
 	header.header-main.ta-center
 		h1.text-title MAGIC TILEGEN <span class="subtitle">by <a target="_blank" href="http://github.com/lousousa">wizard</a></span>
-		p.text An automatic generator of squared tile variations. (v.0.0.1)
+		p.text An automatic generator of squared tile variations. (v.0.0.2)
 	div.mw-640.ta-center
 		h2 Template for valid image inputs:
 		p.text (Be careful, you must to follow the template structure for the generator to work correctly)
 		div.mtd-row
 			-
 				info1 = [
-					{title: "2 BORDERS, ALL SIDES", file: "2-full.png"},
-					{title: "3 BORDERS, JUST TOP", file: "3-top.png"},
-					{title: "3 BORDERS, ALL SIDES", file: "3-full.png"}
+					{title: "2 TYPE OF BORDERS, ALL SIDES", file: "2-full.png"},
+					{title: "2 INTERNAL CORNERS", file: "2-internal-corners.png"},
+					{title: "3 TYPE OF BORDERS, JUST TOP", file: "3-top.png"},
+					{title: "3 TYPE OF BORDERS, ALL SIDES", file: "3-full.png"},
+					{title: "3 INTERNAL CORNERS", file: "3-internal-corners.png"}
 				]
 			each entry in info1
 				div.lg-050-m.ta-right.box-padding-right
