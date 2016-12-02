@@ -9,17 +9,17 @@ block content
 		div.mtd-row
 			-
 				info1 = [
-					{title: "2 TYPE OF BORDERS, ALL SIDES", file: "2-full.png"},
-					{title: "2 INTERNAL CORNERS", file: "2-internal-corners.png"},
-					{title: "3 TYPE OF BORDERS, JUST TOP", file: "3-top.png"},
-					{title: "3 TYPE OF BORDERS, ALL SIDES", file: "3-full.png"},
-					{title: "3 INTERNAL CORNERS", file: "3-internal-corners.png"}
+					{title: "2 INTERNAL CORNERS (2 tiles):", file: "2-internal-corners.png"},
+					{title: "3 INTERNAL CORNERS (3 tiles):", file: "3-internal-corners.png"},
+					{title: "2 TYPE OF BORDERS, ALL SIDES (4 tiles):", file: "2-full.png"},
+					{title: "3 TYPE OF BORDERS, JUST TOP (6 tiles):", file: "3-top.png"},
+					{title: "3 TYPE OF BORDERS, ALL SIDES (9 tiles):", file: "3-full.png"}
 				]
 			each entry in info1
-				div.lg-050-m.ta-right.box-padding-right
+				div.lg-055-m.ta-right.box-padding-right
 					h4= entry.title
-				div.lg-050-m.ta-left
-					img(src="/public/assets/images/" + entry.file)
+				div.lg-045-m.ta-left(style="font-size: 0")
+					img(style="box-shadow: 0 1px 2px #888" src="/public/assets/images/" + entry.file)
 		h2 Generate your tileset:
 		form.form-primary(method="post" enctype="multipart/form-data" action="/upload")
 			div.mtd-row
