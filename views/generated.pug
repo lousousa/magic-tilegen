@@ -1,7 +1,9 @@
 extends ./layout.pug
 block content
-  div.ta-center
-    img.img-generated(src=dataURL)
-    br
-    br
-    a(href=dataURL download=generatedFilename + ".png") Download
+	div.ta-center
+		img.img-generated(src=dataURL)
+		br
+		br
+		div.mw-640.ta-center
+			a(href=dataURL download=generatedFilename + ".png") Download
+			include ./form-submit-file.pug

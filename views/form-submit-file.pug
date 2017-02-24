@@ -1,0 +1,8 @@
+form.form-primary(method="post" enctype="multipart/form-data" action="/upload")
+	div.mtd-row
+		div.field.lg-020-m.ta-right
+			label.label Source image:
+		div.field.lg-060-m.ta-left
+			input.input(type="file" name="source-image" accept=".png")
+		div.field.lg-020-m
+			button.btn-action(type="submit") Generate
