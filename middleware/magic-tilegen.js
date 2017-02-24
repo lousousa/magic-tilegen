@@ -10,7 +10,7 @@ const getRouter = () => {
     let file = req.file
     if (!file) return res.redirect("/")
 
-    const generatedFilename = file.filename
+    const generatedFilename = file.originalname
 
     magicTilegen.getDataURL(`${file.destination}${file.filename}`, (err, dataURL) => {
       fs.unlink(`${file.destination}${file.filename}`, () => {

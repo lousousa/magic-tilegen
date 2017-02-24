@@ -69,6 +69,7 @@ const getDataURL = (srcImage, cb) => {
         seedMapping[0]
       ]
     }
+    
     const getData = () => {
       const arr = []
       for (var i = 0; i < tileCount; i++) {
