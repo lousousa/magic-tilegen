@@ -1,7 +1,30 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { useState, useEffect } from 'react'
+
+type Data = {
+  success?: boolean,
+  base64?: string
+}
 
 export default function Home() {
+  const [data, setData]: [Data | null, any] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await (await fetch('/api/generate')).json()
+
+      if (isLoading) {
+        setData(data)
+      }
+    }
+
+    fetchData().catch(console.error)
+
+    return () => setLoading(false)
+  })
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,7 +34,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1>welcome</h1>
+        {data?.success && <h1>no idea {data?.base64}</h1>}
       </main>
     </div>
   )
