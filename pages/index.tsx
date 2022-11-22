@@ -1,11 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
-
-type Data = {
-  success: boolean,
-  dataUrl: string | undefined
-}
+import { Data } from './../utils/types'
 
 export default function Home() {
   const [data, setData] = useState<Data | null>(null)

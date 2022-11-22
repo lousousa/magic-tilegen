@@ -1,84 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import Canvas from 'canvas'
+import utils from './../../utils/generate'
+import { Data } from './../../utils/types'
 const Image = Canvas.Image
-
-type Data = {
-  success: boolean,
-  dataUrl: string | undefined
-}
-
-type Coordinate = {
-  x: number,
-  y: number
-}
-
-const sizeChecker: {[key: number]: string} = {
-  9: '3-full',
-  6: '3-top',
-  4: '2-full',
-  3: '3-internal-corners',
-  2: '2-internal-corners'
-}
-
-const seedMapping = [
-  [ [0, 0], [0, 0], [0, 0], [0, 0] ],
-  [ [0, 1], [1, 0], [0, 1], [1, 0] ],
-  [ [0, 2], [2, 0], [0, 2], [2, 0] ],
-  [ [1, 0], [0, 1], [1, 0], [0, 1] ],
-  [ [1, 1], [1, 1], [1, 1], [1, 1] ],
-  [ [1, 2], [2, 1], [1, 2], [2, 1] ],
-  [ [2, 0], [0, 2], [2, 0], [0, 2] ],
-  [ [2, 1], [1, 2], [2, 1], [1, 2] ],
-  [ [2, 2], [2, 2], [2, 2], [2, 2] ]
-]
-
-const borderMapping: {[key: string]: number[][][]} = {
-  '3-full': seedMapping,
-  '3-top': [
-    seedMapping[0],
-    seedMapping[1],
-    seedMapping[3],
-    seedMapping[4],
-    [ [0, 2], [2, 0], [0, 2], [2, 0] ],
-    [ [1, 2], [2, 1], [1, 2], [2, 1] ]
-  ],
-  '2-full': [
-    seedMapping[0],
-    seedMapping[1],
-    seedMapping[3],
-    seedMapping[4],
-  ],
-  '2-internal-corners': [
-    seedMapping[0],
-    seedMapping[0]
-  ],
-  '3-internal-corners': [
-    seedMapping[0],
-    seedMapping[0],
-    seedMapping[0]
-  ]
-}
-
-const gcd = (a: number, b: number): number => !b ? a : gcd(b, a % b)
-
-const getData = (tileCount: number) => {
-  const arr: Coordinate[][] = []
-  for (var i = 0; i < tileCount; i++) {
-    arr.push([])
-    arr[i].push({ x: i * 2, y: 0 })
-    arr[i].push({ x: i * 2 + 1, y: 0 })
-    arr[i].push({ x: i * 2 + 1, y: 1 })
-    arr[i].push({ x: i * 2, y: 1 })
-  }
-  return arr
-}
-
-const getCellPositionByID = (id: number, xLength: number, yLength: number): Coordinate | boolean => {
-  if (id < 1) return false
-  if (id > xLength * yLength) return false
-  return { x: (id - 1) % xLength, y: Math.floor((id - 1) / xLength) }
-}
 
 const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
   const bufferData = await fs.readFileSync(srcImage, 'base64')
@@ -86,15 +11,15 @@ const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
 
   img.src = `data:image/png;base64, ${ bufferData }`
 
-  const tileCount = img.width / gcd(img.width, img.height)
-  if (!sizeChecker[tileCount]) {
+  const tileCount = img.width / utils.gcd(img.width, img.height)
+  if (!utils.sizeChecker[tileCount]) {
     return new Promise((_, reject) => {
       reject(`Invalid image size! You must to provide a horizontal image
         containing 4, 6, or 9 tiles. (following the template structure)`)
     })
   }
 
-  const mapSelected = sizeChecker[tileCount]
+  const mapSelected = utils.sizeChecker[tileCount]
   const tileSize = img.width / tileCount
   const canvasTemp = Canvas.createCanvas(img.width, img.height)
   const ctxTemp = canvasTemp.getContext('2d')
@@ -110,8 +35,8 @@ const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
   const canvas = Canvas.createCanvas(tileSize * destSize.w, tileSize * destSize.h)
   const ctx = canvas.getContext('2d')
 
-  const m = borderMapping[mapSelected]
-  const d = getData(tileCount)
+  const m = utils.borderMapping[mapSelected]
+  const d = utils.getData(tileCount)
   let id = 1
 
   for (let i = 0; i < m.length; i++) {
@@ -131,7 +56,7 @@ const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
               cancel = k == 4 || k == 5 || l == 4 || l == 5
 
             if (!cancel) {
-              const pos = getCellPositionByID(id, destSize.w, destSize.h)
+              const pos = utils.getCellPositionByID(id, destSize.w, destSize.h)
               if (typeof pos === 'boolean') return
 
               ctx.putImageData(getTile(d[i][0].x, d[i][0].y), pos.x * tileSize, pos.y * tileSize, 0, 0, tileSize / 2, tileSize / 2)
