@@ -3,13 +3,13 @@ import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
 
 type Data = {
-  success?: boolean,
-  base64?: string
+  success: boolean,
+  dataUrl: string | undefined
 }
 
 export default function Home() {
-  const [data, setData]: [Data | null, any] = useState(null)
-  const [isLoading, setLoading] = useState(true)
+  const [data, setData] = useState<Data | null>(null)
+  const [isLoading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +34,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {data?.success && <h1>no idea {data?.base64}</h1>}
+        {data && <img src={data.dataUrl}/>}
       </main>
     </div>
   )
