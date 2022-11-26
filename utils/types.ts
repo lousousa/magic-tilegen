@@ -1,6 +1,6 @@
 export type Data = {
   success: boolean,
-  dataUrl: string | undefined
+  dataUrl?: string | undefined
 }
 
 export type Coordinates = {

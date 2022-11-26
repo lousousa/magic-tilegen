@@ -1,25 +1,21 @@
 import Head from 'next/head'
+import { UIFileInputButton } from '../components/ui/fileInputButton'
+import axios from 'axios'
 import styles from '../styles/Home.module.css'
-import { useState, useEffect } from 'react'
-import { Data } from './../utils/types'
 
 export default function Home() {
-  const [data, setData] = useState<Data | null>(null)
-  const [isLoading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await (await fetch('/api/generate')).json()
-
-      if (isLoading) {
-        setData(data)
+  const onChange = async (body: FormData) => {
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (event: any) => {
+        console.log(`current progress: ${Math.round((event.loaded * 100) / event.total)}`)
       }
     }
 
-    fetchData().catch(console.error)
+    const { data } = await axios.post('/api/upload', body, config)
 
-    return () => setLoading(false)
-  })
+    console.log(data)
+  }
 
   return (
     <div className={styles.container}>
@@ -29,8 +25,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        {data && <img src={data.dataUrl}/>}
+      <main>
+        <UIFileInputButton
+          label="upload single file"
+          uploadFileName="file"
+          onChange={onChange}
+        />
       </main>
     </div>
   )
