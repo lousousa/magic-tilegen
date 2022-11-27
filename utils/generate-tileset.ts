@@ -71,7 +71,7 @@ const getCellPositionByID = (id: number, xLength: number, yLength: number): Coor
   return { x: (id - 1) % xLength, y: Math.floor((id - 1) / xLength) }
 }
 
-const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
+export default async (srcImage: string): Promise<string | undefined> => {
   const bufferData = await fs.readFileSync(srcImage, 'base64')
   const img = new Image()
 
@@ -144,5 +144,3 @@ const getDataUrl = async (srcImage: string): Promise<string | undefined> => {
     }
   }
 }
-
-export default { getDataUrl }

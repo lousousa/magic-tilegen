@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { UIFileInputButton } from '../components/ui/fileInputButton'
+import { UIFileInputButton } from '../components/ui/file-input-button'
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
 
