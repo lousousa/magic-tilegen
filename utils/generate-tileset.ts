@@ -1,6 +1,10 @@
 import fs from 'fs'
-import { Coordinates } from './types'
 import Canvas from 'canvas'
+
+export type Coordinates = {
+  x: number,
+  y: number
+}
 
 const Image = Canvas.Image
 

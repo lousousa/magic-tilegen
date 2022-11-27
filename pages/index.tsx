@@ -2,8 +2,11 @@ import Head from 'next/head'
 import { UIFileInputButton } from '../components/ui/file-input-button'
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
+import { useState } from 'react'
 
 export default function Home() {
+  const [dataUrl, setDataUrl] = useState<string | null>(null)
+
   const onChange = async (body: FormData) => {
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -12,9 +15,12 @@ export default function Home() {
       }
     }
 
-    const { data } = await axios.post('/api/upload', body, config)
+    const responseUpload = await axios.post('/api/upload', body, config)
 
-    console.log(data)
+    if (responseUpload.data?.success) {
+      const { data } = await axios.get('/api/generate', { params: { filePath: responseUpload.data.filepath } })
+      setDataUrl(data.dataUrl)
+    }
   }
 
   return (
@@ -31,6 +37,8 @@ export default function Home() {
           uploadFileName="file"
           onChange={onChange}
         />
+
+        {dataUrl && <img src={dataUrl}/>}
       </main>
     </div>
   )
