@@ -8,6 +8,8 @@ export default function Home() {
   const [dataUrl, setDataUrl] = useState<string | null>(null)
 
   const onChange = async (body: FormData) => {
+    setDataUrl(null)
+
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (event: any) => {
@@ -18,8 +20,13 @@ export default function Home() {
     const responseUpload = await axios.post('/api/upload', body, config)
 
     if (responseUpload.data?.success) {
-      const { data } = await axios.get('/api/generate', { params: { filePath: responseUpload.data.filepath } })
-      setDataUrl(data.dataUrl)
+      try {
+        const { data } = await axios.post('/api/generate', { filePath: responseUpload.data.filepath })
+        setDataUrl(data.dataUrl)
+      } catch(err: any) {
+        const message = err.response.data.error
+        console.log(message)
+      }
     }
   }
 
