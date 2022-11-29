@@ -7,10 +7,12 @@ import multer from 'multer'
 const destination = './public/uploads'
 if(!fs.existsSync(destination)) fs.mkdirSync(destination)
 let filepath: string
+let filename: string | undefined
 
 export type ResponseData = {
   success: boolean,
-  filepath?: string
+  filepath?: string,
+  filename?: string
 }
 
 const upload = multer({
@@ -18,6 +20,11 @@ const upload = multer({
     destination,
     filename: (req, file, cb) => {
       filepath = `${destination}/${file.originalname}`
+
+      let temp: string | string[] =  file.originalname.split('.')
+      temp.pop()
+      filename = temp.join('')
+
       return cb(null, file.originalname)
     }
   })
@@ -28,7 +35,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 router
   .use(upload.single('file') as any)
   .post((req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
-    res.status(200).json({ success: true, filepath })
+    res.status(200).json({ success: true, filepath, filename })
   })
 
 export default router.handler({

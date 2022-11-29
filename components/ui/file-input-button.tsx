@@ -29,12 +29,12 @@ export const UIFileInputButton: FC<IProps> = (props) => {
 
   return (
     <form ref={formRef}>
-      <Button
+      <ButtonUpload
         type="button"
         onClick={onClickHandler}
       >
         {props.label}
-      </Button>
+      </ButtonUpload>
 
       <input
         accept={props.acceptedFileTypes}
@@ -54,7 +54,7 @@ UIFileInputButton.defaultProps = {
   allowMultipleFiles: false
 }
 
-const Button = styled.button`
+const ButtonUpload = styled.button`
   border: 0;
   background-color: #000;
   color: #fff;

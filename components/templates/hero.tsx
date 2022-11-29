@@ -7,6 +7,7 @@ import { UIFileInputButton } from '../ui/file-input-button'
 
 export const Hero = () => {
   const [dataUrl, setDataUrl] = useState<string | null>(null)
+  const [tilesetName, setTilesetName] = useState<string | null>(null)
 
   const onChange = async (body: FormData) => {
     setDataUrl(null)
@@ -22,8 +23,10 @@ export const Hero = () => {
 
     if (responseUpload.data?.success) {
       try {
-        const { data } = await axios.post('/api/generate', { filePath: responseUpload.data.filepath })
+        const { filepath, filename } = responseUpload.data
+        const { data } = await axios.post('/api/generate', { filepath })
         setDataUrl(data.dataUrl)
+        setTilesetName(`${filename}-tileset`)
       } catch(err: any) {
         const message = err.response.data.error
         console.log(message)
@@ -37,13 +40,22 @@ export const Hero = () => {
         <h1>magic tilegen</h1>
 
         <main>
-          <UIFileInputButton
+          {dataUrl &&
+            <ButtonDownload
+              href={dataUrl}
+              download={`${tilesetName}.png`}
+            >
+              download
+            </ButtonDownload>
+          }
+
+          {!dataUrl &&
+            <UIFileInputButton
             label="upload"
             uploadFileName="file"
             onChange={onChange}
-          />
-
-          {dataUrl && <img src={dataUrl}/>}
+            />
+          }
         </main>
       </Content>
     </MainWrapper>
@@ -68,4 +80,15 @@ const Content = styled.div`
   main {
     margin-top: 88px;
   }
+`
+
+const ButtonDownload = styled.a`
+  display: inline-block;
+  border: 0;
+  background-color: #000;
+  color: #fff;
+  border-radius: 4px;
+  padding: 8px 32px;
+  font-size: 24px;
+  cursor: pointer;
 `
