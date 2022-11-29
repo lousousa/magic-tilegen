@@ -1,4 +1,5 @@
 import { FC, useRef, ChangeEvent } from 'react'
+import styled from 'styled-components'
 
 export interface IProps {
   acceptedFileTypes?: string
@@ -28,9 +29,12 @@ export const UIFileInputButton: FC<IProps> = (props) => {
 
   return (
     <form ref={formRef}>
-      <button type="button" onClick={onClickHandler}>
+      <Button
+        type="button"
+        onClick={onClickHandler}
+      >
         {props.label}
-      </button>
+      </Button>
 
       <input
         accept={props.acceptedFileTypes}
@@ -49,3 +53,13 @@ UIFileInputButton.defaultProps = {
   acceptedFileTypes: 'image/png, image/jpeg',
   allowMultipleFiles: false
 }
+
+const Button = styled.button`
+  border: 0;
+  background-color: #000;
+  color: #fff;
+  border-radius: 4px;
+  padding: 8px 32px;
+  font-size: 24px;
+  cursor: pointer;
+`
