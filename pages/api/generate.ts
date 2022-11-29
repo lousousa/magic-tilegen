@@ -11,7 +11,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 router
   .post(async (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
-    const dataUrl = await generateTileset(req.body.filepath as string)
+    const dataUrl = await generateTileset(req.body.filePath as string)
     res.status(200).json({ success: true, dataUrl })
   })
 
