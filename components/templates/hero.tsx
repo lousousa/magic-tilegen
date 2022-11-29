@@ -22,6 +22,8 @@ export const Hero = () => {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (event: any) => {
         setUploadProgress(Math.round((event.loaded * 100) / event.total))
+
+        console.log(Math.round((event.loaded * 100) / event.total))
       }
     }
 
