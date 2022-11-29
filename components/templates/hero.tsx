@@ -1,13 +1,19 @@
 import axios from 'axios'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 
 import { MainWrapper } from '../styles'
 import { UIFileInputButton } from '../ui/file-input-button'
 
+export interface IProps {
+  uploadProgress: number
+  dataUrl: string | null
+}
+
 export const Hero = () => {
   const [dataUrl, setDataUrl] = useState<string | null>(null)
   const [tilesetName, setTilesetName] = useState<string | null>(null)
+  const [uploadProgress, setUploadProgress] = useState<number>(0)
 
   const onChange = async (body: FormData) => {
     setDataUrl(null)
@@ -15,7 +21,7 @@ export const Hero = () => {
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (event: any) => {
-        console.log(`current progress: ${Math.round((event.loaded * 100) / event.total)}`)
+        setUploadProgress(Math.round((event.loaded * 100) / event.total))
       }
     }
 
@@ -34,28 +40,39 @@ export const Hero = () => {
     }
   }
 
+  const MainContent: FC<IProps> = (props) => {
+    const shouldShowProgress = props.uploadProgress > 0 && props.uploadProgress < 100
+
+    if (shouldShowProgress) {
+      return <span>`${props.uploadProgress}%`</span>
+    }
+
+    if (props.dataUrl) {
+      return <ButtonDownload
+        href={props.dataUrl}
+        download={`${tilesetName}.png`}
+      >
+        download
+      </ButtonDownload>
+    }
+
+    return <UIFileInputButton
+      label="upload"
+      uploadFileName="file"
+      onChange={onChange}
+    />
+  }
+
   return (
     <MainWrapper backgroundColor={'#ddd'}>
       <Content>
         <h1>magic tilegen</h1>
 
         <main>
-          {dataUrl &&
-            <ButtonDownload
-              href={dataUrl}
-              download={`${tilesetName}.png`}
-            >
-              download
-            </ButtonDownload>
-          }
-
-          {!dataUrl &&
-            <UIFileInputButton
-            label="upload"
-            uploadFileName="file"
-            onChange={onChange}
-            />
-          }
+          <MainContent
+            uploadProgress={uploadProgress}
+            dataUrl={dataUrl}
+          />
         </main>
       </Content>
     </MainWrapper>
