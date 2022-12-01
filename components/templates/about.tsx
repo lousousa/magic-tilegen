@@ -19,25 +19,32 @@ export const About = () => {
       </TextTitle>
 
       <PreviewWrapper>
-        <div>
+        <ImageWrapper>
           <Image
-            src="/../public/assets/images/2-full.png"
+            src="/assets/images/2-full.png"
             alt="source image"
+            objectFit="contain"
             fill
           />
-        </div>
+        </ImageWrapper>
 
-        <div>
-          arrow
-        </div>
-
-        <div>
+        <IconWrapper>
           <Image
-            src="/../public/assets/images/2-full-tileset.png"
+            src="/assets/icons/arrow-right.svg"
             alt="source image"
+            objectFit="contain"
             fill
           />
-        </div>
+        </IconWrapper>
+
+        <ImageWrapper>
+          <Image
+            src="/assets/images/2-full-tileset.png"
+            alt="source image"
+            objectFit="contain"
+            fill
+          />
+        </ImageWrapper>
       </PreviewWrapper>
     </Content>
   </MainWrapper>
@@ -63,9 +70,20 @@ const PreviewWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 96px;
+  padding: 0 166px;
 
   div {
     flex: 1;
-    text-align: center;
   }
+`
+
+const ImageWrapper = styled.div`
+  position: relative;
+  height: 200px;
+  max-width: 160px;
+`
+
+const IconWrapper = styled.div`
+  position: relative;
+  height: 20px;
 `
