@@ -82,12 +82,11 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 88px 0;
 
   h1 {
     width: 100%;
     text-align: center;
-    margin: 0;
+    margin: 96px 0 0;
     font-size: 68px;
     font-weight: 600;
     color: var(--color-grayscale-light);
@@ -103,7 +102,7 @@ const Content = styled.div`
   }
 
   main {
-    margin-top: 56px;
+    margin: 56px 0 96px;
   }
 `
 

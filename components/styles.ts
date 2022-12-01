@@ -7,6 +7,6 @@ export const MainWrapper = styled.div<{backgroundColor: string}>`
   background-color: ${props => `var(--color-${props.backgroundColor})`};
 
   > div {
-    max-width: 1080px;
+    max-width: 896px;
   }
 `
