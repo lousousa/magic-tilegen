@@ -56,10 +56,11 @@ UIFileInputButton.defaultProps = {
 
 const ButtonUpload = styled.button`
   border: 0;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-grayscale-dark);
   border-radius: 4px;
   padding: 8px 32px;
   font-size: 24px;
+  font-weight: 600;
   cursor: pointer;
 `

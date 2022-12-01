@@ -61,7 +61,7 @@ export const Hero = () => {
   }
 
   return (
-    <MainWrapper backgroundColor={'#eee'}>
+    <MainWrapper backgroundColor={'grayscale-dark'}>
       <Content>
         <h1>✨ magic tilegen ✨</h1>
 
@@ -90,6 +90,7 @@ const Content = styled.div`
     margin: 0;
     font-size: 68px;
     font-weight: 600;
+    color: var(--color-grayscale-light);
   }
 
   h2 {
@@ -98,6 +99,7 @@ const Content = styled.div`
     margin: 24px 0 0;
     font-size: 24px;
     font-weight: 400;
+    color: var(--color-grayscale-light);
   }
 
   main {
@@ -108,16 +110,19 @@ const Content = styled.div`
 const ButtonDownload = styled.a`
   display: inline-block;
   border: 0;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-grayscale-dark);
   border-radius: 4px;
   padding: 8px 32px;
   font-size: 24px;
+  font-weight: 600;
   cursor: pointer;
 `
 
 const LoadingLabel = styled.span`
   font-size: 24px;
   line-height: 44px;
+  font-weight: 600;
   font-style: italic;
+  color: var(--color-primary);
 `
