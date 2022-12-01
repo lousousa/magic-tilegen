@@ -6,25 +6,20 @@ import { MainWrapper } from '../styles'
 import { UIFileInputButton } from '../ui/file-input-button'
 
 export interface IProps {
-  uploadProgress: number
   dataUrl: string | null
 }
 
 export const Hero = () => {
   const [dataUrl, setDataUrl] = useState<string | null>(null)
   const [tilesetName, setTilesetName] = useState<string | null>(null)
-  const [uploadProgress, setUploadProgress] = useState<number>(0)
+  const [isLoading, setLoading] = useState<boolean>(false)
 
   const onChange = async (body: FormData) => {
     setDataUrl(null)
+    setLoading(true)
 
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (event: any) => {
-        setUploadProgress(Math.round((event.loaded * 100) / event.total))
-
-        console.log(Math.round((event.loaded * 100) / event.total))
-      }
+    const config: any = {
+      headers: { 'Content-Type': 'multipart/form-data' }
     }
 
     const responseUpload = await axios.post('/api/upload', body, config)
@@ -38,15 +33,15 @@ export const Hero = () => {
       } catch(err: any) {
         const message = err.response.data.error
         console.log(message)
+      } finally {
+        setLoading(false)
       }
     }
   }
 
   const MainContent: FC<IProps> = (props) => {
-    const shouldShowProgress = props.uploadProgress > 0 && props.uploadProgress < 100
-
-    if (shouldShowProgress) {
-      return <span>`${props.uploadProgress}%`</span>
+    if (isLoading) {
+      return <LoadingLabel>abracadabra...</LoadingLabel>
     }
 
     if (props.dataUrl) {
@@ -66,13 +61,14 @@ export const Hero = () => {
   }
 
   return (
-    <MainWrapper backgroundColor={'#ddd'}>
+    <MainWrapper backgroundColor={'#eee'}>
       <Content>
-        <h1>magic tilegen</h1>
+        <h1>✨ magic tilegen ✨</h1>
+
+        <h2>a <b>magic</b> tileset generator for 2D composition.</h2>
 
         <main>
           <MainContent
-            uploadProgress={uploadProgress}
             dataUrl={dataUrl}
           />
         </main>
@@ -96,8 +92,16 @@ const Content = styled.div`
     font-weight: 600;
   }
 
+  h2 {
+    width: 100%;
+    text-align: center;
+    margin: 24px 0 0;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
   main {
-    margin-top: 88px;
+    margin-top: 56px;
   }
 `
 
@@ -110,4 +114,10 @@ const ButtonDownload = styled.a`
   padding: 8px 32px;
   font-size: 24px;
   cursor: pointer;
+`
+
+const LoadingLabel = styled.span`
+  font-size: 24px;
+  line-height: 44px;
+  font-style: italic;
 `
