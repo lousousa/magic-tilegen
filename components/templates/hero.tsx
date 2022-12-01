@@ -102,7 +102,7 @@ const Content = styled.div`
   }
 
   main {
-    margin: 56px 0 96px;
+    margin: 56px 0 116px;
   }
 `
 
@@ -115,6 +115,7 @@ const ButtonDownload = styled.a`
   padding: 8px 32px;
   font-size: 24px;
   font-weight: 600;
+  margin-bottom: -4px;
   cursor: pointer;
 `
 
