@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <MainWrapper backgroundColor={'grayscale-dark'}>
       <Content>
-        <h3>developed by <a href="https://github.com/lousousa" target="_blank">@lousousa</a> - 2022</h3>
+        <h3>developed by <a href="https://github.com/lousousa" target="_blank" rel="noreferrer">@lousousa</a> - 2022</h3>
       </Content>
     </MainWrapper>
   )

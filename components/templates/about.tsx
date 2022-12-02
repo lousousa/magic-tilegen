@@ -15,10 +15,10 @@ export const About = () => {
     }
   ]
 
-  const previewSection = previewData.map(data => {
-    const templatesPreview = data.templates.map(template => {
+  const previewSection = previewData.map((data, idx) => {
+    const templatesPreview = data.templates.map((template, idx) => {
       return (
-        <PreviewWrapper>
+        <PreviewWrapper key={`preview_wrapper_${idx}`}>
           <ImageWrapper>
             <Image
               src={`/assets/images/${template}.png`}
@@ -50,7 +50,7 @@ export const About = () => {
     })
 
     return [
-      <TextTitle>
+      <TextTitle key={`text_title_${idx}`}>
         {data.title}
       </TextTitle>,
 
