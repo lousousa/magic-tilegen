@@ -77,6 +77,7 @@ const getCellPositionByID = (id: number, xLength: number, yLength: number): Coor
 
 export default async (srcImage: string): Promise<string | undefined> => {
   const bufferData = await fs.readFileSync(srcImage, 'base64')
+  fs.unlinkSync(srcImage)
   const img = new Image()
 
   img.src = `data:image/png;base64, ${ bufferData }`
@@ -84,8 +85,7 @@ export default async (srcImage: string): Promise<string | undefined> => {
   const tileCount = img.width / gcd(img.width, img.height)
   if (!sizeChecker[tileCount]) {
     return new Promise((_, reject) => {
-      reject(`Invalid image size! You must to provide a horizontal image
-        containing 4, 6, or 9 tiles. (following the template structure)`)
+      reject(`Invalid image size! You have to provide a horizontal image containing 2, 3, 4, 6, or 9 tiles. (following the template structure)`)
     })
   }
 

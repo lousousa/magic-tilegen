@@ -1,45 +1,23 @@
 import Head from 'next/head'
-import { UIFileInputButton } from '../components/ui/file-input-button'
-import axios from 'axios'
-import styles from '../styles/Home.module.css'
-import { useState } from 'react'
+
+import { Hero } from '../components/templates/hero'
+import { About } from '../components/templates/about'
+import { Footer } from '../components/templates/footer'
 
 export default function Home() {
-  const [dataUrl, setDataUrl] = useState<string | null>(null)
-
-  const onChange = async (body: FormData) => {
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (event: any) => {
-        console.log(`current progress: ${Math.round((event.loaded * 100) / event.total)}`)
-      }
-    }
-
-    const responseUpload = await axios.post('/api/upload', body, config)
-
-    if (responseUpload.data?.success) {
-      const { data } = await axios.get('/api/generate', { params: { filePath: responseUpload.data.filepath } })
-      setDataUrl(data.dataUrl)
-    }
-  }
-
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>✨ Magic Tilegen ✨</title>
         <meta name="description" content="A solution for generate a full combination image tileset, based on a minimal image source" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <UIFileInputButton
-          label="upload single file"
-          uploadFileName="file"
-          onChange={onChange}
-        />
+      <Hero />
 
-        {dataUrl && <img src={dataUrl}/>}
-      </main>
+      <About />
+
+      <Footer />
     </div>
   )
 }
