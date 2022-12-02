@@ -58,19 +58,21 @@ export const About = () => {
     ]
   })
 
-  return <MainWrapper backgroundColor={'grayscale-light'}>
-    <Content>
-      <TextTitle>
-        how it works
-      </TextTitle>
+  return (
+    <MainWrapper backgroundColor={'grayscale-light'}>
+      <Content>
+        <TextTitle>
+          how it works
+        </TextTitle>
 
-      <DescriptionWrapper>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam molestias, dolorum voluptatum et, amet commodi, fugiat asperiores odio laborum quasi sunt repellendus dolorem voluptates ab pariatur velit cupiditate minima labore!</p>
-      </DescriptionWrapper>
+        <DescriptionWrapper>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam molestias, dolorum voluptatum et, amet commodi, fugiat asperiores odio laborum quasi sunt repellendus dolorem voluptates ab pariatur velit cupiditate minima labore!</p>
+        </DescriptionWrapper>
 
-      {previewSection}
-    </Content>
-  </MainWrapper>
+        {previewSection}
+      </Content>
+    </MainWrapper>
+  )
 }
 
 const Content = styled.div`

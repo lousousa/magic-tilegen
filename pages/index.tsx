@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import { Hero } from '../components/templates/hero'
 import { About } from '../components/templates/about'
+import { Footer } from '../components/templates/footer'
 
 export default function Home() {
   return (
@@ -15,6 +16,8 @@ export default function Home() {
       <Hero />
 
       <About />
+
+      <Footer />
     </div>
   )
 }
