@@ -4,6 +4,60 @@ import Image from 'next/image'
 import { MainWrapper } from '../styles'
 
 export const About = () => {
+  const previewData = [
+    {
+      title: 'base tiles',
+      templates: [ '2-full', '3-top', '3-full' ]
+    },
+    {
+      title: 'internal corners',
+      templates: [ '2-internal-corners', '3-internal-corners' ]
+    }
+  ]
+
+  const previewSection = previewData.map(data => {
+    const templatesPreview = data.templates.map(template => {
+      return (
+        <PreviewWrapper>
+          <ImageWrapper>
+            <Image
+              src={`/assets/images/${template}.png`}
+              alt="source image"
+              objectFit="contain"
+              fill
+            />
+          </ImageWrapper>
+
+          <IconWrapper>
+            <Image
+              src="/assets/icons/arrow-right.svg"
+              alt="source image"
+              objectFit="contain"
+              fill
+            />
+          </IconWrapper>
+
+          <ImageWrapper>
+            <Image
+              src={`/assets/images/${template}-tileset.png`}
+              alt="source image"
+              objectFit="contain"
+              fill
+            />
+          </ImageWrapper>
+        </PreviewWrapper>
+      )
+    })
+
+    return [
+      <TextTitle>
+        {data.title}
+      </TextTitle>,
+
+      templatesPreview
+    ]
+  })
+
   return <MainWrapper backgroundColor={'grayscale-light'}>
     <Content>
       <TextTitle>
@@ -14,38 +68,7 @@ export const About = () => {
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam molestias, dolorum voluptatum et, amet commodi, fugiat asperiores odio laborum quasi sunt repellendus dolorem voluptates ab pariatur velit cupiditate minima labore!</p>
       </DescriptionWrapper>
 
-      <TextTitle>
-        base tiles
-      </TextTitle>
-
-      <PreviewWrapper>
-        <ImageWrapper>
-          <Image
-            src="/assets/images/2-full.png"
-            alt="source image"
-            objectFit="contain"
-            fill
-          />
-        </ImageWrapper>
-
-        <IconWrapper>
-          <Image
-            src="/assets/icons/arrow-right.svg"
-            alt="source image"
-            objectFit="contain"
-            fill
-          />
-        </IconWrapper>
-
-        <ImageWrapper>
-          <Image
-            src="/assets/images/2-full-tileset.png"
-            alt="source image"
-            objectFit="contain"
-            fill
-          />
-        </ImageWrapper>
-      </PreviewWrapper>
+      {previewSection}
     </Content>
   </MainWrapper>
 }
@@ -70,7 +93,7 @@ const PreviewWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 96px;
-  padding: 0 166px;
+  padding: 0 96px;
 
   div {
     flex: 1;
@@ -80,10 +103,10 @@ const PreviewWrapper = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   height: 200px;
-  max-width: 160px;
+  max-width: 200px;
 `
 
 const IconWrapper = styled.div`
   position: relative;
-  height: 20px;
+  height: 104px;
 `
